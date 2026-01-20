@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FREEFALL</title>
+<style>
+body{background:#080808;color:#eee;font-family:monospace;padding:16px}
+h1{text-align:center}
+button{width:100%;padding:10px;margin:5px 0;background:#151515;color:#fff;border:1px solid #444}
+#log{height:240px;overflow-y:auto;border:1px solid #333;padding:8px;background:#050505}
+.bar{height:12px;background:#333;position:relative;margin:8px 0}
+.marker{width:3px;height:12px;background:red;position:absolute}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<h1>FREEFALL</h1>
+
+<div id="menu">
+<button onclick="start()">Play</button>
+<button onclick="reset()">New Game</button>
+</div>
+
+<div id="game" class="hidden">
+<div id="log"></div>
+<div id="ui"></div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+
+const CHARACTERS={
+Spirit:{hp:90,maxHp:90,base:20,alt:10,lines:{
+weak:"Too easy. Next time… try harder.",
+undead:"Killing the Killed… how… oddly satisfying.",
+boss:"You were defeated, by a mere mortal."
+}},
+Mantis:{hp:100,maxHp:100,base:15,alt:8,lines:{
+weak:"My skill is unmatched! Heh.",
+undead:"The undead is re-dead… satisfying.",
+boss:"Nanana boo boo!"
+}},
+Cacerv:{hp:125,maxHp:125,base:20,alt:5,lines:{
+weak:"HAHA! Bye bye, Birdie.",
+undead:"Just like in the horror films! Except I don’t die.",
+boss:"слишком легко"
+}},
+Enola:{hp:80,maxHp:80,base:25,alt:20,lines:{
+weak:"I wonder how you would taste in a stew…",
+undead:"Can’t cook you... awww.",
+boss:"Hmmm… a Divine dish? Haha! What a wonderful idea!"
+}}
+};
+
+const ENEMIES=[
+{name:"Demon",hp:75,dmg:20,type:"weak"},
+{name:"Skinwalker",hp:100,dmg:15,type:"weak"},
+{name:"Goblin",hp:25,dmg:50,type:"weak"},
+{name:"Zombie",hp:50,dmg:30,type:"undead"},
+{name:"Ghost",hp:125,dmg:8,type:"undead"}
+];
+
+const BOSSES=[
+{name:"False Virtue",hp:900},
+{name:"Zombie King",hp:1000},
+{name:"Demon King",hp:1200},
+{name:"The Boogie Man",hp:1250},
+{name:"The Fallen Angel",hp:2500}
+];
+
+const ITEMS={
+"Medical Pack":()=>{g.player.hp=Math.min(g.player.maxHp,g.player.hp+40)},
+"Gluttony":()=>{g.enemy.hp-=20},
+"Beer":()=>{g.player.base+=5},
+"Lightning Bug":()=>{g.player.base+=1},
+"Meat":()=>{g.player.maxHp+=2;g.player.hp+=1},
+"Sticky Note":()=>{g.enemy.dmg=Math.max(1,g.enemy.dmg-5)}
+};
+
+const ROOMS=["Dungeon","Poolroom","Treasure","Dead End","Empty"];
+
+/* ================= STATE ================= */
+
+let g=JSON.parse(localStorage.getItem("freefall"))||null;
+const log=t=>{let l=document.getElementById("log");l.innerHTML+=t+"<br>";l.scrollTop=l.scrollHeight;}
+const save=()=>localStorage.setItem("freefall",JSON.stringify(g));
+
+/* ================= MENU ================= */
+
+function start(){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+g?explore():lore();
+}
+
+function reset(){
+localStorage.removeItem("freefall");
+location.reload();
+}
+
+function lore(){
+log("Once, long ago, a group of humans fell into the underworld…");
+let ui=document.getElementById("ui");ui.innerHTML="";
+for(let c in CHARACTERS)
+ui.innerHTML+=`<button onclick="choose('${c}')">${c}</button>`;
+}
+
+function choose(c){
+g={
+char:c,
+player:{...CHARACTERS[c]},
+level:1,
+items:[],
+enemy:null,
+room:null,
+enemyChance:20,
+bossChance:0,
+bossIndex:0,
+battle:false
+};
+save();
+explore();
+}
+
+/* ================= EXPLORATION ================= */
+
+function explore(){
+let ui=document.getElementById("ui");ui.innerHTML="";
+g.room=ROOMS[Math.floor(Math.random()*ROOMS.length)];
+log("Room: "+g.room);
+
+if(Math.random()*100<g.bossChance && g.bossIndex<BOSSES.length){
+boss();return;
+}
+
+if(Math.random()*100<g.enemyChance && g.room!=="Empty"){
+fight();return;
+}
+
+if(g.room==="Treasure"){
+loot();
+}
+
+g.enemyChance+=5;
+g.bossChance+=1.5;
+save();
+ui.innerHTML+=`<button onclick="explore()">Go Deeper</button>`;
+}
+
+/* ================= COMBAT ================= */
+
+function fight(){
+g.enemyChance=15;
+g.enemy=JSON.parse(JSON.stringify(ENEMIES[Math.floor(Math.random()*ENEMIES.length)]));
+g.battle=true;
+log("A "+g.enemy.name+" emerges.");
+battleUI();
+}
+
+function boss(){
+g.bossChance=0;
+g.enemy={...BOSSES[g.bossIndex],dmg:25};
+g.bossIndex++;
+g.battle=true;
+log("BOSS: "+g.enemy.name);
+battleUI();
+}
+
+function battleUI(){
+let ui=document.getElementById("ui");
+ui.innerHTML=`
+<button onclick="attack()">Attack</button>
+<button onclick="dodge()">Dodge</button>
+<button onclick="item()">Item</button>`;
+}
+
+/* ===== ATTACK MINI GAME ===== */
+
+function attack(){
+let clicks=0;
+let max=g.player.base;
+log("ATTACK! Click fast!");
+let ui=document.getElementById("ui");
+ui.innerHTML=`<button onclick="clicks++">CLICK</button>`;
+let start=Date.now();
+let t=setInterval(()=>{
+if(Date.now()-start>4000){
+clearInterval(t);
+let dmg=Math.min(clicks,max);
+g.enemy.hp-=dmg;
+log("You dealt "+dmg+" damage.");
+enemyTurn();
+}},50);
+}
+
+/* ===== DODGE MINI GAME ===== */
+
+function dodge(){
+let hit=Math.random()<0.5;
+if(hit){
+log("Perfect dodge.");
+enemyTurn(true);
+}else{
+let dmg=g.enemy.dmg*2;
+g.player.hp-=dmg;
+log("Failed dodge! Took "+dmg);
+check();
+}
+}
+
+/* ================= ENEMY TURN ================= */
+
+function enemyTurn(skip){
+if(g.enemy.hp<=0){victory();return;}
+if(!skip && Math.random()<0.3){
+let heal=Math.floor(Math.random()*10)+1;
+g.enemy.hp+=heal;
+log("Enemy heals "+heal);
+}else if(!skip){
+g.player.hp-=g.enemy.dmg;
+log("Enemy hits for "+g.enemy.dmg);
+}
+check();
+}
+
+/* ================= VICTORY ================= */
+
+function victory(){
+let lines=g.player.lines;
+if(BOSSES.find(b=>b.name===g.enemy.name))
+log(lines.boss);
+else
+log(lines[g.enemy.type]);
+
+g.battle=false;
+levelUp();
+}
+
+/* ================= LEVEL ================= */
+
+function levelUp(){
+g.level++;
+let ui=document.getElementById("ui");
+ui.innerHTML=`
+<button onclick="lvl('hp')">Increase Health</button>
+<button onclick="lvl('dmg')">Increase Damage</button>
+<button onclick="lvl('loot')">Random Treasure</button>`;
+}
+
+function lvl(t){
+if(t==="hp"){g.player.maxHp+=10;g.player.hp+=10;}
+if(t==="dmg"){g.player.base+=3;}
+if(t==="loot"){loot();}
+save();
+explore();
+}
+
+/* ================= ITEMS ================= */
+
+function loot(){
+let keys=Object.keys(ITEMS);
+let it=keys[Math.floor(Math.random()*keys.length)];
+g.items.push(it);
+log("Found: "+it);
+}
+
+function item(){
+let ui=document.getElementById("ui");ui.innerHTML="";
+if(g.items.length===0){log("No items.");enemyTurn();return;}
+g.items.forEach((i,n)=>{
+ui.innerHTML+=`<button onclick="use(${n})">${i}</button>`;
+});
+}
+
+function use(n){
+let i=g.items.splice(n,1)[0];
+ITEMS[i]();
+log("Used "+i);
+enemyTurn();
+}
+
+/* ================= CHECK ================= */
+
+function check(){
+if(g.player.hp<=0){
+log("You have fallen into the abyss.");
+localStorage.removeItem("freefall");
+return;
+}
+save();
+battleUI();
+}
+</script>
+</body>
+</html>
