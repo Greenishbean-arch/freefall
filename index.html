@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>FREEFALL</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 body {
   background:black;
   color:#00ff66;
@@ -14,28 +13,26 @@ body {
   margin:0;
   padding:10px;
 }
-
 button {
   background:black;
-  border:2px solid #00ff66;
   color:#00ff66;
-  font-family:inherit;
+  border:2px solid #00ff66;
   padding:10px;
   margin:6px;
-  font-size:12px;
+  font-family:inherit;
+  font-size:11px;
 }
-
 button:active {
   background:#00ff66;
   color:black;
 }
+.hidden { display:none; }
 
 #log {
+  border:2px solid #00ff66;
   height:160px;
   overflow-y:auto;
-  border:2px solid #00ff66;
   padding:6px;
-  margin-top:10px;
   font-size:10px;
 }
 
@@ -46,78 +43,82 @@ button:active {
   margin:10px auto;
   position:relative;
 }
-
 #indicator {
   width:6px;
   height:100%;
   background:#00ff66;
   position:absolute;
-  left:0;
+  left:0%;
 }
-
 #target {
   position:absolute;
   left:45%;
   width:10%;
   height:100%;
-  background:#004422;
+  background:#003322;
 }
-
-.hidden { display:none; }
 </style>
 </head>
+
 <body>
 
 <h2>FREEFALL</h2>
 
 <div id="menu">
-<button onclick="startGame()">PLAY</button>
+  <button onclick="startGame()">PLAY</button>
+</div>
+
+<div id="charSelect" class="hidden">
+  <p>CHOOSE YOUR DESCENT</p>
+  <button onclick="selectChar('Spirit')">SPIRIT</button>
+  <button onclick="selectChar('Mantis')">MANTIS</button>
+  <button onclick="selectChar('Cacerv')">CACERV</button>
+  <button onclick="selectChar('Enola')">ENOLA</button>
 </div>
 
 <div id="game" class="hidden">
-<div id="stats"></div>
-<div id="room"></div>
+  <div id="stats"></div>
+  <div id="room"></div>
 
-<div id="combat" class="hidden">
-<button onclick="attack()">ATTACK</button>
-<button onclick="startDodge()">DODGE</button>
-<button onclick="useItem()">ITEM</button>
-<button onclick="useSpell()">SPELL</button>
+  <div id="combat" class="hidden">
+    <button onclick="startAttack()">ATTACK</button>
+    <button onclick="startDodge()">DODGE</button>
+    <button onclick="useSpell()">SPELL</button>
+  </div>
 
-<div id="attackArea" class="hidden">
-<p id="attackText"></p>
-<button onclick="registerClick()">CLICK</button>
-</div>
+  <div id="attackBox" class="hidden">
+    <p id="attackText"></p>
+    <button onclick="registerClick()">CLICK</button>
+  </div>
 
-<div id="dodgeArea" class="hidden">
-<p>DODGE TIMING</p>
-<div class="bar">
-<div id="target"></div>
-<div id="indicator"></div>
-</div>
-<button onclick="attemptDodge()">DODGE NOW</button>
-</div>
-</div>
+  <div id="dodgeBox" class="hidden">
+    <p>DODGE TIMING</p>
+    <div class="bar">
+      <div id="target"></div>
+      <div id="indicator"></div>
+    </div>
+    <button onclick="resolveDodge()">DODGE NOW</button>
+  </div>
 
-<div id="explore">
-<button onclick="explore()">SEARCH / MOVE</button>
-</div>
+  <div id="explore">
+    <button onclick="explore()">SEARCH / MOVE</button>
+  </div>
 
-<div id="log"></div>
+  <div id="log"></div>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
-/* ---------------- CORE DATA ---------------- */
-const characters = {
- Spirit:{hp:90,max:90,weapon:20,alt:10,class:"Rogue"},
- Mantis:{hp:100,max:100,weapon:15,alt:8,class:"Mage"},
- Cacerv:{hp:125,max:125,weapon:20,alt:5,class:"Tank"},
- Enola:{hp:80,max:80,weapon:25,alt:20,class:"Butcher"}
+/* ===== DATA ===== */
+const chars={
+ Spirit:{hp:90,max:90,weapon:20,class:"Rogue"},
+ Mantis:{hp:100,max:100,weapon:15,class:"Mage"},
+ Cacerv:{hp:125,max:125,weapon:20,class:"Tank"},
+ Enola:{hp:80,max:80,weapon:25,class:"Butcher"}
 };
 
-const enemies = [
+const enemies=[
  {name:"Demon",hp:75,dmg:20,type:"normal"},
  {name:"Skinwalker",hp:100,dmg:15,type:"normal"},
  {name:"Goblin",hp:25,dmg:28,type:"normal"},
@@ -125,7 +126,7 @@ const enemies = [
  {name:"Ghost",hp:125,dmg:8,type:"undead"}
 ];
 
-const bosses = [
+const bosses=[
  {name:"False Virtue",hp:900},
  {name:"Zombie King",hp:1000},
  {name:"Demon King",hp:1200},
@@ -137,76 +138,67 @@ let state={
  player:null,
  enemy:null,
  roomCount:0,
- enemyChance:0.2,
+ enemyChance:0.15,
  bossChance:0,
  bossIndex:0,
- inventory:[],
  spells:[],
- level:1,
- dmgBonus:0,
- music:"ambient"
+ clicks:0,
+ clickLimit:0
 };
 
-/* ---------------- MUSIC ---------------- */
+/* ===== MUSIC ===== */
 const music=document.getElementById("music");
-function playMusic(type){
- if(state.music===type) return;
- state.music=type;
- music.src=`audio:${type}.mp3`;
+function playMusic(t){
+ music.src=`audio:${t}.mp3`;
  music.play();
 }
 
-/* ---------------- UI ---------------- */
-const log=t=>{document.getElementById("log").innerHTML+=t+"<br>";}
-const stats=()=>document.getElementById("stats").innerHTML=
-`HP ${state.player.hp}/${state.player.max} | LV ${state.level}`;
+/* ===== UI ===== */
+const log=t=>{document.getElementById("log").innerHTML+=t+"<br>";};
+const stats=()=>document.getElementById("stats").innerText=
+`HP ${state.player.hp}/${state.player.max} | LV ${state.player.level||1}`;
 const showRoom=t=>document.getElementById("room").innerText=t;
 
-/* ---------------- START ---------------- */
+/* ===== START ===== */
 function startGame(){
  playMusic("ambient");
  document.getElementById("menu").classList.add("hidden");
- document.getElementById("game").classList.remove("hidden");
- chooseCharacter();
+ document.getElementById("charSelect").classList.remove("hidden");
 }
 
-function chooseCharacter(){
- let c=prompt("Choose: Spirit, Mantis, Cacerv, Enola");
- if(!characters[c]) return chooseCharacter();
- state.player=JSON.parse(JSON.stringify(characters[c]));
+function selectChar(c){
+ state.player={...chars[c],level:1};
  log("You descend as "+c+".");
+ document.getElementById("charSelect").classList.add("hidden");
+ document.getElementById("game").classList.remove("hidden");
  stats();
 }
 
-/* ---------------- EXPLORATION ---------------- */
+/* ===== EXPLORATION ===== */
 function explore(){
  playMusic("ambient");
  state.roomCount++;
- showRoom("Exploring...");
+ showRoom("Exploring deeper...");
  if(Math.random()<state.enemyChance){
    spawnEnemy();
    state.enemyChance=0.15;
  } else {
+   log("The room is empty.");
    state.enemyChance+=0.05;
-   log("The room is quiet...");
  }
  state.bossChance+=1.5;
 }
 
-/* ---------------- ENEMIES ---------------- */
+/* ===== SPAWN ===== */
 function spawnEnemy(){
- if(state.roomCount<8 || Math.random()*100>state.bossChance){
-   const e=JSON.parse(JSON.stringify(enemies[Math.floor(Math.random()*enemies.length)]));
-   state.enemy=e;
-   log("A "+e.name+" appears!");
+ if(state.roomCount<10 || Math.random()*100>state.bossChance){
+   state.enemy=JSON.parse(JSON.stringify(enemies[Math.floor(Math.random()*enemies.length)]));
+   log("A "+state.enemy.name+" appears!");
    startCombat();
- } else {
-   spawnBoss();
- }
+ } else spawnBoss();
 }
 
 function spawnBoss(){
- if(state.bossIndex>=bosses.length) return;
  state.enemy=JSON.parse(JSON.stringify(bosses[state.bossIndex]));
  state.bossIndex++;
  state.bossChance=0;
@@ -215,7 +207,7 @@ function spawnBoss(){
  startCombat();
 }
 
-/* ---------------- COMBAT ---------------- */
+/* ===== COMBAT ===== */
 function startCombat(){
  playMusic(state.enemy.hp>500?"boss":"battle");
  document.getElementById("combat").classList.remove("hidden");
@@ -229,46 +221,45 @@ function endCombat(){
  state.enemy=null;
 }
 
-/* ---------------- ATTACK ---------------- */
-let clicks=0,limit=0,timer=null;
-
-function attack(){
- clicks=0;
- limit=state.player.weapon+state.dmgBonus;
+/* ===== ATTACK ===== */
+function startAttack(){
+ state.clicks=0;
+ state.clickLimit=state.player.weapon;
  document.getElementById("attackText").innerText=
- `Click Attack ${limit} times in 4 seconds.`;
- document.getElementById("attackArea").classList.remove("hidden");
- timer=setTimeout(resolveAttack,4000);
+`Click Attack ${state.clickLimit} times in 4 seconds.`;
+ document.getElementById("attackBox").classList.remove("hidden");
+ setTimeout(resolveAttack,4000);
 }
 
-function registerClick(){ clicks++; }
+function registerClick(){
+ state.clicks++;
+}
 
 function resolveAttack(){
- clearTimeout(timer);
- document.getElementById("attackArea").classList.add("hidden");
- const dmg=Math.min(clicks,limit);
+ document.getElementById("attackBox").classList.add("hidden");
+ const dmg=Math.min(state.clicks,state.clickLimit);
  state.enemy.hp-=dmg;
  log("You deal "+dmg+" damage.");
  enemyTurn();
 }
 
-/* ---------------- DODGE ---------------- */
-let dodgePos=0,dodgeDir=1;
+/* ===== DODGE ===== */
+let dodgePos=0,dir=1,interval;
 
 function startDodge(){
- document.getElementById("dodgeArea").classList.remove("hidden");
- dodgePos=0; dodgeDir=1;
- dodgeInterval=setInterval(()=>{
-   dodgePos+=dodgeDir*5;
-   if(dodgePos>90||dodgePos<0) dodgeDir*=-1;
+ document.getElementById("dodgeBox").classList.remove("hidden");
+ dodgePos=0;dir=1;
+ interval=setInterval(()=>{
+   dodgePos+=dir*4;
+   if(dodgePos>90||dodgePos<0)dir*=-1;
    indicator.style.left=dodgePos+"%";
- },50);
+ },40);
 }
 
-function attemptDodge(){
- clearInterval(dodgeInterval);
- document.getElementById("dodgeArea").classList.add("hidden");
- if(dodgePos>45 && dodgePos<55){
+function resolveDodge(){
+ clearInterval(interval);
+ document.getElementById("dodgeBox").classList.add("hidden");
+ if(dodgePos>45&&dodgePos<55){
    log("Perfect dodge!");
  } else {
    const dmg=state.enemy.dmg*2;
@@ -278,34 +269,31 @@ function attemptDodge(){
  stats();
 }
 
-/* ---------------- ENEMY TURN ---------------- */
+/* ===== ENEMY TURN ===== */
 function enemyTurn(){
  if(state.enemy.hp<=0){
    log(state.enemy.name+" defeated.");
    if(state.enemy.hp>500){
-     state.spells.push("Boss Spell");
+     state.spells.push("Spell");
      log("You gained a spell.");
    }
    endCombat();
    return;
  }
- let dmg=state.enemy.dmg;
  if(Math.random()<0.2){
-   const heal=Math.min(10,state.enemy.hp);
-   state.enemy.hp+=heal;
+   state.enemy.hp+=10;
    log(state.enemy.name+" heals.");
  } else {
-   state.player.hp-=dmg;
-   log(state.enemy.name+" hits for "+dmg);
+   state.player.hp-=state.enemy.dmg;
+   log(state.enemy.name+" hits for "+state.enemy.dmg);
  }
  stats();
  if(state.player.hp<=0) alert("YOU DIED");
 }
 
-/* ---------------- ITEMS & SPELLS ---------------- */
-function useItem(){ log("Items coming from inventory."); enemyTurn(); }
+/* ===== SPELL ===== */
 function useSpell(){
- if(!state.spells.length){log("No spells.");return;}
+ if(!state.spells.length){log("No spells unlocked.");return;}
  state.enemy.hp-=40;
  log("Spell hits for 40.");
  enemyTurn();
