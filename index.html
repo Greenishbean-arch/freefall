@@ -3,321 +3,313 @@
 <head>
 <meta charset="UTF-8">
 <title>FREEFALL</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
 <style>
-body{
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
   background:black;
   color:#00ff66;
   font-family:'Press Start 2P', monospace;
   text-align:center;
   margin:0;
+  padding:10px;
 }
-#game{padding:12px;}
-button{
+
+button {
   background:black;
-  color:#00ff66;
   border:2px solid #00ff66;
+  color:#00ff66;
+  font-family:inherit;
   padding:10px;
   margin:6px;
-  font-family:'Press Start 2P';
+  font-size:12px;
 }
-button:hover{background:#003311;}
-#log{
-  border:2px solid #00ff66;
-  height:220px;
+
+button:active {
+  background:#00ff66;
+  color:black;
+}
+
+#log {
+  height:160px;
   overflow-y:auto;
-  padding:6px;
-  margin:10px auto;
-  width:95%;
-  max-width:600px;
-  background:#001a0d;
-  font-size:11px;
-  text-align:left;
-}
-.hidden{display:none;}
-#bar{
-  width:220px;
-  height:10px;
   border:2px solid #00ff66;
-  margin:8px auto;
+  padding:6px;
+  margin-top:10px;
+  font-size:10px;
+}
+
+.bar {
+  width:90%;
+  height:20px;
+  border:2px solid #00ff66;
+  margin:10px auto;
   position:relative;
 }
-#dot{
-  width:10px;
-  height:10px;
+
+#indicator {
+  width:6px;
+  height:100%;
   background:#00ff66;
   position:absolute;
   left:0;
 }
+
+#target {
+  position:absolute;
+  left:45%;
+  width:10%;
+  height:100%;
+  background:#004422;
+}
+
+.hidden { display:none; }
 </style>
 </head>
-
 <body>
-<div id="game">
 
-<h1>FREEFALL</h1>
+<h2>FREEFALL</h2>
 
 <div id="menu">
-  <button onclick="start()">PLAY</button>
+<button onclick="startGame()">PLAY</button>
 </div>
 
-<div id="characters" class="hidden">
-  <p>CHOOSE YOUR DESCENT</p>
-  <button onclick="choose('Spirit')">Spirit</button>
-  <button onclick="choose('Mantis')">Mantis</button>
-  <button onclick="choose('Cacerv')">Cacerv</button>
-  <button onclick="choose('Enola')">Enola</button>
+<div id="game" class="hidden">
+<div id="stats"></div>
+<div id="room"></div>
+
+<div id="combat" class="hidden">
+<button onclick="attack()">ATTACK</button>
+<button onclick="startDodge()">DODGE</button>
+<button onclick="useItem()">ITEM</button>
+<button onclick="useSpell()">SPELL</button>
+
+<div id="attackArea" class="hidden">
+<p id="attackText"></p>
+<button onclick="registerClick()">CLICK</button>
 </div>
 
-<div id="hud" class="hidden">
-  <div id="stats"></div>
-  <div id="enemyStats"></div>
+<div id="dodgeArea" class="hidden">
+<p>DODGE TIMING</p>
+<div class="bar">
+<div id="target"></div>
+<div id="indicator"></div>
+</div>
+<button onclick="attemptDodge()">DODGE NOW</button>
+</div>
+</div>
+
+<div id="explore">
+<button onclick="explore()">SEARCH / MOVE</button>
 </div>
 
 <div id="log"></div>
-
-<div id="actions" class="hidden">
-  <button onclick="explore()">Search / Move</button>
-  <button onclick="attack()">Attack</button>
-  <button onclick="useItem()">Use Item</button>
-  <button onclick="castSpell()">Magic Spells</button>
-</div>
-
-<div id="dodgeUI" class="hidden">
-  <p>DODGE!</p>
-  <div id="bar"><div id="dot"></div></div>
-  <button onclick="attemptDodge()">CLICK</button>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
-/* ================= CORE DATA ================= */
-
-const chars={
-Spirit:{hp:90,weapon:20,fists:10,class:"Rogue"},
-Mantis:{hp:100,weapon:15,fists:8,class:"Mage"},
-Cacerv:{hp:125,weapon:20,fists:5,class:"Tank"},
-Enola:{hp:80,weapon:25,fists:20,class:"Butcher"}
+/* ---------------- CORE DATA ---------------- */
+const characters = {
+ Spirit:{hp:90,max:90,weapon:20,alt:10,class:"Rogue"},
+ Mantis:{hp:100,max:100,weapon:15,alt:8,class:"Mage"},
+ Cacerv:{hp:125,max:125,weapon:20,alt:5,class:"Tank"},
+ Enola:{hp:80,max:80,weapon:25,alt:20,class:"Butcher"}
 };
 
-const enemies=[
-{name:"Demon",hp:75,dmg:20,type:"demon"},
-{name:"Skinwalker",hp:100,dmg:15,type:"beast"},
-{name:"Ghost",hp:125,dmg:8,type:"undead"},
-{name:"Zombie",hp:50,dmg:30,type:"undead"},
-{name:"Goblin",hp:25,dmg:28,type:"goblin"}
+const enemies = [
+ {name:"Demon",hp:75,dmg:20,type:"normal"},
+ {name:"Skinwalker",hp:100,dmg:15,type:"normal"},
+ {name:"Goblin",hp:25,dmg:28,type:"normal"},
+ {name:"Zombie",hp:50,dmg:30,type:"undead"},
+ {name:"Ghost",hp:125,dmg:8,type:"undead"}
 ];
 
-const bosses=[
-{name:"False Virtue",hp:900},
-{name:"Zombie King",hp:1000},
-{name:"Demon King",hp:1200},
-{name:"The Boogie Man",hp:1250},
-{name:"The Fallen Angel",hp:2500}
+const bosses = [
+ {name:"False Virtue",hp:900},
+ {name:"Zombie King",hp:1000},
+ {name:"Demon King",hp:1200},
+ {name:"The Boogie Man",hp:1250},
+ {name:"The Fallen Angel",hp:2500}
 ];
 
-const voicelines={
-Spirit:{
-low:"Too easy. Next time… try harder.",
-undead:"Killing the Killed… how… oddly satisfying.",
-boss:"You were defeated, by a mere mortal."
-},
-Mantis:{
-low:"My skill is unmatched! Heh.",
-undead:"The undead is re-dead… satisfying.",
-boss:"Nanana boo boo!"
-},
-Cacerv:{
-low:"HAHA! Bye bye, Birdie.",
-undead:"Just like in the horror films! Except I don’t die.",
-boss:"слишком легко"
-},
-Enola:{
-low:"I wonder how you would taste in a stew…",
-undead:"Can’t cook you... awww.",
-boss:"Hmmm… a Divine dish? Haha! What a wonderful idea!"
-}
+let state={
+ player:null,
+ enemy:null,
+ roomCount:0,
+ enemyChance:0.2,
+ bossChance:0,
+ bossIndex:0,
+ inventory:[],
+ spells:[],
+ level:1,
+ dmgBonus:0,
+ music:"ambient"
 };
 
-const items={
-"Medical Pack":()=>heal(30),
-"Gluttony":()=>enemy.hp-=20,
-"Beer":()=>player.bonus+=5,
-"Lightning Bug":()=>player.bonus+=1,
-"Meat":()=>{player.max+=5;heal(10);},
-"Sticky Note":()=>player.nextWeak=true
-};
-
-/* ================= GAME STATE ================= */
-
-let player={},enemy=null;
-let enemyChance=0.2;
-let bossChance=0;
-let bossIndex=0;
-let rooms=0;
-let clickGoal=0,clicks=0;
-let dodgePos=0,dodgeTimer;
-
-/* ================= MUSIC ================= */
-
+/* ---------------- MUSIC ---------------- */
 const music=document.getElementById("music");
-function play(track){
-music.src="audio/"+track;
-music.play().catch(()=>{});
+function playMusic(type){
+ if(state.music===type) return;
+ state.music=type;
+ music.src=`audio:${type}.mp3`;
+ music.play();
 }
 
-/* ================= UI ================= */
+/* ---------------- UI ---------------- */
+const log=t=>{document.getElementById("log").innerHTML+=t+"<br>";}
+const stats=()=>document.getElementById("stats").innerHTML=
+`HP ${state.player.hp}/${state.player.max} | LV ${state.level}`;
+const showRoom=t=>document.getElementById("room").innerText=t;
 
-const logDiv=document.getElementById("log");
-function log(t){logDiv.innerHTML+=t+"<br>";logDiv.scrollTop=99999;}
-function stats(){
-document.getElementById("stats").innerHTML=
-`${player.name} HP ${player.hp}/${player.max} DMG ${player.weapon+player.bonus}`;
-document.getElementById("enemyStats").innerHTML=
-enemy?`${enemy.name} HP ${enemy.hp}`:"";
+/* ---------------- START ---------------- */
+function startGame(){
+ playMusic("ambient");
+ document.getElementById("menu").classList.add("hidden");
+ document.getElementById("game").classList.remove("hidden");
+ chooseCharacter();
 }
 
-/* ================= START ================= */
-
-function start(){
-document.getElementById("menu").classList.add("hidden");
-document.getElementById("characters").classList.remove("hidden");
-play("ambient.mp3");
+function chooseCharacter(){
+ let c=prompt("Choose: Spirit, Mantis, Cacerv, Enola");
+ if(!characters[c]) return chooseCharacter();
+ state.player=JSON.parse(JSON.stringify(characters[c]));
+ log("You descend as "+c+".");
+ stats();
 }
 
-function choose(c){
-player={
-name:c,
-hp:chars[c].hp,
-max:chars[c].hp,
-weapon:chars[c].weapon,
-bonus:0,
-items:{
-"Medical Pack":1,"Gluttony":1,"Beer":1,
-"Lightning Bug":1,"Meat":1,"Sticky Note":1
-},
-spells:[]
-};
-document.getElementById("characters").classList.add("hidden");
-document.getElementById("hud").classList.remove("hidden");
-document.getElementById("actions").classList.remove("hidden");
-log("You fall into the underworld…");
-stats();
-}
-
-/* ================= EXPLORATION ================= */
-
+/* ---------------- EXPLORATION ---------------- */
 function explore(){
-rooms++;
-if(Math.random()<bossChance && rooms>12 && bossIndex<bosses.length){
-enemy={...bosses[bossIndex],boss:true};
-bossIndex++;
-bossChance=0;
-play("boss.mp3");
-log("BOSS APPEARS: "+enemy.name);
-stats();return;
-}
-bossChance+=0.015;
-if(Math.random()<enemyChance){
-enemy={...enemies[Math.floor(Math.random()*enemies.length)]};
-enemyChance=0.15;
-play("battle.mp3");
-log("Enemy appears: "+enemy.name);
-stats();
-}else{
-enemyChance+=0.05;
-log("You explore further…");
-}
+ playMusic("ambient");
+ state.roomCount++;
+ showRoom("Exploring...");
+ if(Math.random()<state.enemyChance){
+   spawnEnemy();
+   state.enemyChance=0.15;
+ } else {
+   state.enemyChance+=0.05;
+   log("The room is quiet...");
+ }
+ state.bossChance+=1.5;
 }
 
-/* ================= COMBAT ================= */
+/* ---------------- ENEMIES ---------------- */
+function spawnEnemy(){
+ if(state.roomCount<8 || Math.random()*100>state.bossChance){
+   const e=JSON.parse(JSON.stringify(enemies[Math.floor(Math.random()*enemies.length)]));
+   state.enemy=e;
+   log("A "+e.name+" appears!");
+   startCombat();
+ } else {
+   spawnBoss();
+ }
+}
+
+function spawnBoss(){
+ if(state.bossIndex>=bosses.length) return;
+ state.enemy=JSON.parse(JSON.stringify(bosses[state.bossIndex]));
+ state.bossIndex++;
+ state.bossChance=0;
+ log("BOSS: "+state.enemy.name);
+ playMusic("boss");
+ startCombat();
+}
+
+/* ---------------- COMBAT ---------------- */
+function startCombat(){
+ playMusic(state.enemy.hp>500?"boss":"battle");
+ document.getElementById("combat").classList.remove("hidden");
+ document.getElementById("explore").classList.add("hidden");
+}
+
+function endCombat(){
+ playMusic("ambient");
+ document.getElementById("combat").classList.add("hidden");
+ document.getElementById("explore").classList.remove("hidden");
+ state.enemy=null;
+}
+
+/* ---------------- ATTACK ---------------- */
+let clicks=0,limit=0,timer=null;
 
 function attack(){
-if(!enemy)return;
-clickGoal=player.weapon;
-clicks=0;
-log(`Click Attack ${clickGoal} times in 4 seconds.`);
-const btn=document.createElement("button");
-btn.textContent="CLICK";
-btn.onclick=()=>{if(clicks<clickGoal)clicks++;};
-document.getElementById("actions").appendChild(btn);
-setTimeout(()=>{
-btn.remove();
-enemy.hp-=clicks;
-log("You deal "+clicks+" damage.");
-if(enemy.hp<=0)victory();
-else enemyTurn();
-stats();
-},4000);
+ clicks=0;
+ limit=state.player.weapon+state.dmgBonus;
+ document.getElementById("attackText").innerText=
+ `Click Attack ${limit} times in 4 seconds.`;
+ document.getElementById("attackArea").classList.remove("hidden");
+ timer=setTimeout(resolveAttack,4000);
 }
 
-function enemyTurn(){
-document.getElementById("dodgeUI").classList.remove("hidden");
-dodgePos=0;
-dodgeTimer=setInterval(()=>{
-dodgePos+=5;if(dodgePos>200)dodgePos=0;
-document.getElementById("dot").style.left=dodgePos+"px";
-},30);
+function registerClick(){ clicks++; }
+
+function resolveAttack(){
+ clearTimeout(timer);
+ document.getElementById("attackArea").classList.add("hidden");
+ const dmg=Math.min(clicks,limit);
+ state.enemy.hp-=dmg;
+ log("You deal "+dmg+" damage.");
+ enemyTurn();
+}
+
+/* ---------------- DODGE ---------------- */
+let dodgePos=0,dodgeDir=1;
+
+function startDodge(){
+ document.getElementById("dodgeArea").classList.remove("hidden");
+ dodgePos=0; dodgeDir=1;
+ dodgeInterval=setInterval(()=>{
+   dodgePos+=dodgeDir*5;
+   if(dodgePos>90||dodgePos<0) dodgeDir*=-1;
+   indicator.style.left=dodgePos+"%";
+ },50);
 }
 
 function attemptDodge(){
-clearInterval(dodgeTimer);
-document.getElementById("dodgeUI").classList.add("hidden");
-let dmg=enemy.dmg||25;
-if(Math.abs(dodgePos-100)<15){
-log("Perfect Dodge!");
-}else{
-if(dodgePos<80||dodgePos>120)dmg*=2;
-player.hp-=dmg;
-log("You take "+dmg+" damage.");
-}
-if(player.hp<=0){log("YOU DIED");}
-stats();
+ clearInterval(dodgeInterval);
+ document.getElementById("dodgeArea").classList.add("hidden");
+ if(dodgePos>45 && dodgePos<55){
+   log("Perfect dodge!");
+ } else {
+   const dmg=state.enemy.dmg*2;
+   state.player.hp-=dmg;
+   log("Failed dodge! Took "+dmg);
+ }
+ stats();
 }
 
-/* ================= ITEMS & SPELLS ================= */
-
-function useItem(){
-let list=Object.keys(player.items).filter(i=>player.items[i]>0);
-let pick=prompt("Item: "+list.join(", "));
-if(items[pick]){
-player.items[pick]--;
-items[pick]();
-log("Used "+pick);
-stats();
-}
-}
-
-function castSpell(){
-if(player.spells.length==0){log("No spells.");return;}
-let s=prompt("Spell: "+player.spells.join(", "));
-if(s==="Smite"){enemy.hp-=60;log("SMITE!");}
-stats();
-}
-
-/* ================= RESULTS ================= */
-
-function victory(){
-log(enemy.name+" defeated!");
-let type=enemy.boss?"boss":
-(enemy.type==="undead"?"undead":"low");
-log(voicelines[player.name][type]);
-if(enemy.boss){
-player.spells.push("Smite");
-log("Spell unlocked: Smite");
-}
-enemy=null;
-play("ambient.mp3");
-stats();
+/* ---------------- ENEMY TURN ---------------- */
+function enemyTurn(){
+ if(state.enemy.hp<=0){
+   log(state.enemy.name+" defeated.");
+   if(state.enemy.hp>500){
+     state.spells.push("Boss Spell");
+     log("You gained a spell.");
+   }
+   endCombat();
+   return;
+ }
+ let dmg=state.enemy.dmg;
+ if(Math.random()<0.2){
+   const heal=Math.min(10,state.enemy.hp);
+   state.enemy.hp+=heal;
+   log(state.enemy.name+" heals.");
+ } else {
+   state.player.hp-=dmg;
+   log(state.enemy.name+" hits for "+dmg);
+ }
+ stats();
+ if(state.player.hp<=0) alert("YOU DIED");
 }
 
-function heal(x){
-player.hp=Math.min(player.max,player.hp+x);
+/* ---------------- ITEMS & SPELLS ---------------- */
+function useItem(){ log("Items coming from inventory."); enemyTurn(); }
+function useSpell(){
+ if(!state.spells.length){log("No spells.");return;}
+ state.enemy.hp-=40;
+ log("Spell hits for 40.");
+ enemyTurn();
 }
 </script>
-</div>
 </body>
 </html>
