@@ -27,103 +27,101 @@ button:active{background:var(--green);color:#000}
 </head>
 <body>
 <div class="wrap">
-  <h1>FREEFALL</h1>
+<h1>FREEFALL</h1>
 
-  <!-- MENU -->
-  <div id="menu">
-    <button id="playBtn">PLAY</button>
-  </div>
+<!-- MENU -->
+<div id="menu">
+<button id="playBtn">PLAY</button>
+</div>
 
-  <!-- CHARACTER SELECT -->
-  <div id="charSelect" class="hidden">
-    <div class="card small">CHOOSE YOUR CHARACTER</div>
-    <div style="margin-top:8px">
-      <button class="charBtn" data-char="Spirit">SPIRIT — Rogue (90 HP) Knife 20 / Fists 10</button>
-      <button class="charBtn" data-char="Mantis">MANTIS — Mage (100 HP) Orb 15 / Kick 8</button>
-      <button class="charBtn" data-char="Cacerv">CACERV — Tank (125 HP) Hammer 20 / Fists 5</button>
-      <button class="charBtn" data-char="Enola">ENOLA — Butcher (80 HP) Machete 25 / Scissors 20</button>
-    </div>
-  </div>
+<!-- CHARACTER SELECT -->
+<div id="charSelect" class="hidden">
+<div class="card small">CHOOSE YOUR CHARACTER</div>
+<div style="margin-top:8px">
+<button class="charBtn" data-char="Spirit">SPIRIT — Rogue (90 HP) Knife 20 / Fists 10</button>
+<button class="charBtn" data-char="Mantis">MANTIS — Mage (100 HP) Orb 15 / Kick 8</button>
+<button class="charBtn" data-char="Cacerv">CACERV — Tank (125 HP) Hammer 20 / Fists 5</button>
+<button class="charBtn" data-char="Enola">ENOLA — Butcher (80 HP) Machete 25 / Scissors 20</button>
+</div>
+</div>
 
-  <!-- HUD -->
-  <div id="hud" class="hidden">
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <div id="playerCard" class="card">PLAYER</div>
-      <div id="roomCard" class="card">ROOM</div>
-      <div id="invCard" class="card">Inventory<div id="invSummary" class="small"></div></div>
-    </div>
+<!-- HUD -->
+<div id="hud" class="hidden">
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<div id="playerCard" class="card">PLAYER</div>
+<div id="roomCard" class="card">ROOM</div>
+<div id="invCard" class="card">Inventory<div id="invSummary" class="small"></div></div>
+</div>
 
-    <div style="margin-top:8px">
-      <button id="exploreBtn">SEARCH / MOVE</button>
-      <button id="inventoryBtn">INVENTORY</button>
-      <button id="spellsBtn">SPELLS</button>
-    </div>
+<div style="margin-top:8px">
+<button id="exploreBtn">SEARCH / MOVE</button>
+<button id="inventoryBtn">INVENTORY</button>
+<button id="spellsBtn">SPELLS</button>
+</div>
 
-    <!-- action area -->
-    <div id="combatArea" class="hidden" style="margin-top:8px">
-      <button id="attackBtn">ATTACK</button>
-      <button id="dodgeBtn">DODGE</button>
-      <button id="useItemBtn">USE ITEM</button>
-      <button id="comboBtn">COMBOS</button>
-    </div>
+<!-- action area -->
+<div id="combatArea" class="hidden" style="margin-top:8px">
+<button id="attackBtn">ATTACK</button>
+<button id="dodgeBtn">DODGE</button>
+<button id="comboBtn">COMBOS</button>
+</div>
 
-    <!-- attack click area -->
-    <div id="attackBox" class="hidden" style="margin-top:8px">
-      <div id="attackText" class="small"></div>
-      <div style="margin-top:6px"><button id="clickBtn">CLICK</button> <span id="clickCounter" class="small">0</span></div>
-    </div>
+<!-- attack click area -->
+<div id="attackBox" class="hidden" style="margin-top:8px">
+<div id="attackText" class="small"></div>
+<div style="margin-top:6px"><button id="clickBtn">CLICK</button> <span id="clickCounter" class="small">0</span></div>
+</div>
 
-    <!-- dodge UI -->
-    <div id="dodgeBox" class="hidden" style="margin-top:8px">
-      <div class="small">Press DODGE NOW while the marker is inside the highlighted zone.</div>
-      <div class="bar" id="dodgeBar">
-        <div id="dodgeTarget" class="target"></div>
-        <div id="dodgeIndicator" class="indicator"></div>
-      </div>
-      <div style="margin-top:6px"><button id="dodgeNowBtn">DODGE NOW</button></div>
-    </div>
+<!-- dodge UI -->
+<div id="dodgeBox" class="hidden" style="margin-top:8px">
+<div class="small">Press DODGE NOW while the marker is inside the highlighted zone.</div>
+<div class="bar" id="dodgeBar">
+<div id="dodgeTarget" class="target"></div>
+<div id="dodgeIndicator" class="indicator"></div>
+</div>
+<div style="margin-top:6px"><button id="dodgeNowBtn">DODGE NOW</button></div>
+</div>
 
-    <div id="exploreDetails" class="small" style="margin-top:8px"></div>
+<div id="exploreDetails" class="small" style="margin-top:8px"></div>
 
-    <div id="log"></div>
+<div id="log"></div>
 
-    <!-- enemy HP display under log -->
-    <div id="enemyHPBox" class="hidden small">
-      <div id="enemyText"></div>
-      <div class="bar" style="height:12px">
-        <div id="enemyFill"></div>
-      </div>
-    </div>
+<!-- enemy HP display under log -->
+<div id="enemyHPBox" class="hidden small">
+<div id="enemyText"></div>
+<div class="bar" style="height:12px">
+<div id="enemyFill"></div>
+</div>
+</div>
 
-    <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <div class="levelCard small">Level: <span id="levelNum">1</span> XP: <span id="xpNum">0</span></div>
-      <div class="card small">Quick Inventory<div id="quickInv" class="invList"></div></div>
-    </div>
-  </div>
+<div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<div class="levelCard small">Level: <span id="levelNum">1</span> XP: <span id="xpNum">0</span></div>
+<div class="card small">Quick Inventory<div id="quickInv" class="invList"></div></div>
+</div>
+</div>
 
-  <!-- inventory modal -->
-  <div id="inventoryPanel" class="hidden" style="margin-top:10px">
-    <div class="card small">INVENTORY — Tap to USE (Torch is reusable)</div>
-    <div id="inventoryList" style="margin-top:10px"></div>
-    <div style="margin-top:8px"><button id="closeInvBtn">CLOSE</button></div>
-  </div>
+<!-- inventory modal -->
+<div id="inventoryPanel" class="hidden" style="margin-top:10px">
+<div class="card small">INVENTORY — Tap to USE (Torch is reusable)</div>
+<div id="inventoryList" style="margin-top:10px"></div>
+<div style="margin-top:8px"><button id="closeInvBtn">CLOSE</button></div>
+</div>
 
-  <!-- spells modal -->
-  <div id="spellsPanel" class="hidden" style="margin-top:10px">
-    <div class="card small">SPELLS</div>
-    <div id="spellsList" style="margin-top:8px"></div>
-    <div style="margin-top:8px"><button id="closeSpellsBtn">CLOSE</button></div>
-  </div>
+<!-- spells modal -->
+<div id="spellsPanel" class="hidden" style="margin-top:10px">
+<div class="card small">SPELLS</div>
+<div id="spellsList" style="margin-top:8px"></div>
+<div style="margin-top:8px"><button id="closeSpellsBtn">CLOSE</button></div>
+</div>
 
-  <!-- level up modal -->
-  <div id="levelPanel" class="hidden" style="margin-top:10px">
-    <div class="card small">LEVEL UP — Choose</div>
-    <div style="margin-top:8px">
-      <button id="lvlHpBtn">Increase Max HP (+10)</button>
-      <button id="lvlDmgBtn">Increase Damage (+3)</button>
-      <button id="lvlTreasureBtn">Random Treasure</button>
-    </div>
-  </div>
+<!-- level up modal -->
+<div id="levelPanel" class="hidden" style="margin-top:10px">
+<div class="card small">LEVEL UP — Choose</div>
+<div style="margin-top:8px">
+<button id="lvlHpBtn">Increase Max HP (+10)</button>
+<button id="lvlDmgBtn">Increase Damage (+3)</button>
+<button id="lvlTreasureBtn">Random Treasure</button>
+</div>
 </div>
 
 <script>
@@ -131,68 +129,67 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 /* ========== DATA ========== */
 const PLAYER_TEMPLATES = {
-  Spirit:{name:"Spirit",class:"Rogue",hp:90,maxHp:90,primaryName:"Knife",primaryDmg:20,altName:"Fists",altDmg:10},
-  Mantis:{name:"Mantis",class:"Mage",hp:100,maxHp:100,primaryName:"Magic Orb",primaryDmg:15,altName:"Kick",altDmg:8},
-  Cacerv:{name:"Cacerv",class:"Tank",hp:125,maxHp:125,primaryName:"Hammer",primaryDmg:20,altName:"Fists",altDmg:5},
-  Enola:{name:"Enola",class:"Butcher",hp:80,maxHp:80,primaryName:"Machete",primaryDmg:25,altName:"Scissors",altDmg:20}
+Spirit:{name:"Spirit",class:"Rogue",hp:90,maxHp:90,primaryName:"Knife",primaryDmg:20,altName:"Fists",altDmg:10},
+Mantis:{name:"Mantis",class:"Mage",hp:100,maxHp:100,primaryName:"Magic Orb",primaryDmg:15,altName:"Kick",altDmg:8},
+Cacerv:{name:"Cacerv",class:"Tank",hp:125,maxHp:125,primaryName:"Hammer",primaryDmg:20,altName:"Fists",altDmg:5},
+Enola:{name:"Enola",class:"Butcher",hp:80,maxHp:80,primaryName:"Machete",primaryDmg:25,altName:"Scissors",altDmg:20}
 };
 
 const ENEMIES = [
-  {name:"Demon",hp:75,dmg:20,type:"demon"},
-  {name:"Skinwalker",hp:100,dmg:15,type:"skinwalker"},
-  {name:"Ghost",hp:125,dmg:8,type:"ghost"},
-  {name:"Zombie",hp:50,dmg:30,type:"zombie"},
-  {name:"Goblin",hp:25,dmg:28,type:"goblin"}
+{name:"Demon",hp:75,dmg:20,type:"demon"},
+{name:"Skinwalker",hp:100,dmg:15,type:"skinwalker"},
+{name:"Ghost",hp:125,dmg:8,type:"ghost"},
+{name:"Zombie",hp:50,dmg:28,type:"zombie"},
+{name:"Goblin",hp:25,dmg:28,type:"goblin"}
 ];
 
 const BOSSES = [
-  {name:"False Virtue",hp:900},
-  {name:"Zombie King",hp:1000},
-  {name:"Demon King",hp:1200},
-  {name:"The Boogie Man",hp:1250},
-  {name:"The Fallen Angel",hp:2500}
+{name:"False Virtue",hp:900},
+{name:"Zombie King",hp:1000},
+{name:"Demon King",hp:1200},
+{name:"The Boogie Man",hp:1250},
+{name:"The Fallen Angel",hp:2500}
 ];
 
 const STARTING_ITEMS = {
-  "Meat":1, "Lightning Bug":1, "Sticky Note":1, "Shell":1, "Beer":1, "Torch":1, "Medical Pack":1
+"Meat":1, "Lightning Bug":1, "Sticky Note":1, "Shell":1, "Beer":1, "Torch":1
 };
 
 const BOSS_SPELLS = [
-  {name:"Smite",desc:"Deal 50 direct damage."},
-  {name:"Rot Nova",desc:"Deal 35 damage and reduce enemy damage next turn by 10."},
-  {name:"Hellbrand",desc:"Deal 70 damage and take 10 recoil."},
-  {name:"Fear Lock",desc:"Enemy loses next turn."},
-  {name:"Divine Sever",desc:"Deal 200 damage (permanent special, saved)."}
+{name:"Smite",desc:"Deal 50 direct damage."},
+{name:"Rot Nova",desc:"Deal 35 damage and reduce enemy damage next turn by 10."},
+{name:"Hellbrand",desc:"Deal 70 damage and take 10 recoil."},
+{name:"Fear Lock",desc:"Enemy loses next turn."},
+{name:"Divine Sever",desc:"Deal 200 damage (permanent special, saved)."}
 ];
 
 /* ========== STATE ========== */
 let state = {
-  player:null,
-  items:{},
-  spells:[],           // per-run spells
-  permSpell:null,      // saved permanent after final boss
-  roomCount:0,
-  enemyChance:20.0,    // percent
-  bossChance:0.0,      // percent
-  bossIndex:0,
-  inCombat:false,
-  enemy:null,
-  enemyQueue:null,
-  enemySkipNext:false,
-  tempDamageBoost:0,
-  tempDamageBoostTurns:0,
-  level:1,
-  xp:0,
-  xpToLevel:100,
-  clickTarget:0,
-  clicks:0,
-  attackStartMs:0
+player:null,
+items:{},
+spells:[],
+permSpell:null,
+roomCount:0,
+enemyChance:20.0,
+bossChance:0.0,
+bossIndex:0,
+inCombat:false,
+enemy:null,
+enemyQueue:null,
+enemySkipNext:false,
+tempDamageBoost:0,
+tempDamageBoostTurns:0,
+level:1,
+xp:0,
+xpToLevel:100,
+clickTarget:0,
+clicks:0,
+attackStartMs:0
 };
 
-// load permanent spell from localStorage
+/* load permanent spell */
 try{
-  const p = localStorage.getItem('freefall_perm_spell');
-  if(p) state.permSpell = p;
+const p = localStorage.getItem('freefall_perm_spell'); if(p) state.permSpell = p;
 }catch(e){}
 
 /* ========== UTIL ========== */
@@ -202,709 +199,163 @@ function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 
 /* ========== UI UPDATE ========== */
 function updateHUD(){
-  if(!state.player) return;
-  $('playerCard').innerHTML = `<strong>${state.player.name}</strong><div class="small">${state.player.class}</div>
-    <div class="small">HP: ${Math.max(0,state.player.hp)}/${state.player.maxHp}</div>
-    <div class="small">Primary: ${state.player.primaryName} ${state.player.primaryDmg} | Alt: ${state.player.altName} ${state.player.altDmg}</div>`;
-  $('roomCard').innerHTML = `<div class="small">Rooms: ${state.roomCount}</div>`;
-  $('invSummary').innerText = Object.entries(state.items).filter(([k,v])=>v>0).map(([k,v])=>`${k} x${v}`).join(" • ") || "Empty";
-  $('levelNum').innerText = state.level;
-  $('xpNum').innerText = `${state.xp}/${state.xpToLevel}`;
-  // quick inv
-  const quick = $('quickInv'); quick.innerHTML = "";
-  Object.entries(state.items).forEach(([k,v])=>{
-    if(v>0) { const p = document.createElement('div'); p.className='pill'; p.innerText = `${k}(${v})`; quick.appendChild(p); }
-  });
-  updateEnemyHP();
+if(!state.player) return;
+$('playerCard').innerHTML = `<strong>${state.player.name}</strong><div class="small">${state.player.class}</div>
+<div class="small">HP: ${Math.max(0,state.player.hp)}/${state.player.maxHp}</div>
+<div class="small">Primary: ${state.player.primaryName} ${state.player.primaryDmg} | Alt: ${state.player.altName} ${state.player.altDmg}</div>`;
+$('roomCard').innerHTML = `<div class="small">Rooms: ${state.roomCount}</div>`;
+$('invSummary').innerText = Object.entries(state.items).filter(([k,v])=>v>0).map(([k,v])=>`${k} x${v}`).join(" • ") || "Empty";
+$('levelNum').innerText = state.level;
+$('xpNum').innerText = `${state.xp}/${state.xpToLevel}`;
+// quick inv
+const quick = $('quickInv'); quick.innerHTML = "";
+Object.entries(state.items).forEach(([k,v])=>{
+if(v>0){ const p = document.createElement('div'); p.className='pill'; p.innerText = `${k}(${v})`; quick.appendChild(p); }
+});
+updateEnemyHP();
 }
 
-/* update enemy HP display which is under log */
 function updateEnemyHP(){
-  const box = $('enemyHPBox');
-  if(state.inCombat && state.enemy){
-    box.classList.remove('hidden');
-    $('enemyText').innerText = `${state.enemy.name} — HP ${Math.max(0,Math.floor(state.enemy.hp))}`;
-    // percent fill using origHp if present
-    const orig = state.enemy.origHp || state.enemy.hp || 1;
-    const pct = clamp(((state.enemy.hp / orig) * 100), 0, 100);
-    $('enemyFill').style.width = pct + '%';
-  } else {
-    box.classList.add('hidden');
-  }
+if(state.inCombat && state.enemy){
+$('enemyHPBox').classList.remove('hidden');
+$('enemyText').innerText = `${state.enemy.name} — HP ${Math.max(0,Math.floor(state.enemy.hp))}`;
+const orig = state.enemy.origHp || state.enemy.hp || 1;
+$('enemyFill').style.width = clamp((state.enemy.hp / orig) * 100, 0, 100)+'%';
+} else $('enemyHPBox').classList.add('hidden');
 }
 
 /* ========== START & CHAR SELECT ========== */
 $('playBtn').addEventListener('click', ()=>{
-  $('menu').classList.add('hidden');
-  $('charSelect').classList.remove('hidden');
+$('menu').classList.add('hidden'); $('charSelect').classList.remove('hidden');
 });
 
 document.querySelectorAll('.charBtn').forEach(b=>{
-  b.addEventListener('click', ()=> {
-    const c = b.dataset.char;
-    beginRun(c);
-  });
+b.addEventListener('click', ()=> { beginRun(b.dataset.char); });
 });
 
-/* begin run */
 function beginRun(charKey){
-  // initialize player from template
-  const tpl = PLAYER_TEMPLATES[charKey];
-  state.player = {
-    name: tpl.name, class: tpl.class, hp: tpl.hp, maxHp: tpl.maxHp,
-    primaryName: tpl.primaryName, primaryDmg: tpl.primaryDmg,
-    altName: tpl.altName, altDmg: tpl.altDmg
-  };
-  // items reset each run
-  state.items = JSON.parse(JSON.stringify(STARTING_ITEMS));
-  state.spells = [];
-  state.roomCount = 0;
-  state.enemyChance = 20.0;
-  state.bossChance = 0.0;
-  state.bossIndex = 0;
-  state.inCombat = false;
-  state.enemy = null;
-  state.enemyQueue = null;
-  state.enemySkipNext = false;
-  state.tempDamageBoost = 0;
-  state.tempDamageBoostTurns = 0;
-  state.level = 1; state.xp = 0; state.xpToLevel = 100;
-  // UI
-  $('charSelect').classList.add('hidden');
-  $('hud').classList.remove('hidden');
-  $('inventoryPanel').classList.add('hidden');
-  $('spellsPanel').classList.add('hidden');
-  $('levelPanel').classList.add('hidden');
-  $('combatArea').classList.add('hidden');
-  $('attackBox').classList.add('hidden');
-  $('dodgeBox').classList.add('hidden');
-  $('enemyHPBox').classList.add('hidden');
-  $('exploreDetails').innerText = "";
-  log("Once, long ago, a group of humans got sucked down a hole and dropped into the underworld. Upon entering, they are filled with unbridled rage.");
-  updateHUD();
+const tpl = PLAYER_TEMPLATES[charKey];
+state.player = {
+name: tpl.name, class: tpl.class, hp: tpl.hp, maxHp: tpl.maxHp,
+primaryName: tpl.primaryName, primaryDmg: tpl.primaryDmg,
+altName: tpl.altName, altDmg: tpl.altDmg
+};
+state.items = JSON.parse(JSON.stringify(STARTING_ITEMS));
+state.spells = [];
+state.roomCount = 0;
+state.enemyChance = 20.0;
+state.bossChance = 0.0;
+state.bossIndex = 0;
+state.inCombat = false; state.enemy = null; state.enemyQueue = null;
+state.enemySkipNext = false; state.tempDamageBoost = 0; state.tempDamageBoostTurns = 0;
+state.level = 1; state.xp = 0; state.xpToLevel = 100;
+
+$('charSelect').classList.add('hidden'); $('hud').classList.remove('hidden');
+$('inventoryPanel').classList.add('hidden'); $('spellsPanel').classList.add('hidden');
+$('levelPanel').classList.add('hidden'); $('combatArea').classList.add('hidden');
+$('attackBox').classList.add('hidden'); $('dodgeBox').classList.add('hidden');
+$('enemyHPBox').classList.add('hidden'); $('exploreDetails').innerText = "";
+log("You enter the underworld… rage fills you.");
+updateHUD();
 }
 
-/* ========== EXPLORATION ========== */
-$('exploreBtn').addEventListener('click', explore);
-
-function explore(){
-  if(state.inCombat){ log("You're in combat — finish it first."); return; }
-  state.roomCount++;
-  // bossChance increases by 1.5 per room
-  state.bossChance = clamp(state.bossChance + 1.5, 0, 100);
-  // pick room type
-  const r = Math.random();
-  let type = "";
-  if(r < 0.30) type = "Dungeon";
-  else if(r < 0.46) type = "Poolroom";
-  else if(r < 0.60) type = "Treasure room";
-  else if(r < 0.85) type = "Empty Room";
-  else type = "Dead End";
-  $('exploreDetails').innerText = `You enter: ${type}`;
-  log(`You move into a ${type}.`);
-  // boss eligibility only after 25 rooms
-  if(state.roomCount >= 25 && Math.random()*100 < state.bossChance && state.bossIndex < BOSSES.length){
-    spawnBoss();
-    return;
-  }
-  if(type === "Dungeon"){
-    // 1-2 enemies sequential
-    const count = Math.random() < 0.45 ? 2 : 1;
-    const q = [];
-    for(let i=0;i<count;i++) q.push(cloneRandomEnemy());
-    state.enemyQueue = q;
-    state.enemy = state.enemyQueue.shift();
-    state.enemy.origHp = state.enemy.hp;
-    log(`Dungeon: you'll face ${count} enemy(ies). First: ${state.enemy.name}`);
-    startCombat();
-    return;
-  }
-  if(type === "Poolroom"){
-    if(Math.random()*100 < state.enemyChance){
-      const pool = ENEMIES.filter(e=>e.name==="Ghost"||e.name==="Skinwalker");
-      state.enemy = clone(pool[Math.floor(Math.random()*pool.length)]);
-      state.enemy.origHp = state.enemy.hp;
-      log(`The pool ripples... ${state.enemy.name} emerges.`);
-      startCombat();
-      return;
-    } else {
-      log("The pool is still and empty.");
-      state.enemyChance = Math.min(95, state.enemyChance + 5);
-      updateHUD();
-      return;
-    }
-  }
-  if(type === "Treasure room"){
-    const it = randomItem();
-    state.items[it] = (state.items[it]||0)+1;
-    log(`Treasure room: you found ${it}.`);
-    state.enemyChance = Math.min(95, state.enemyChance + 5);
-    updateHUD();
-    return;
-  }
-  if(type === "Dead End"){
-    log("Dead end. A moment of rest.");
-    const heal = Math.min(10, state.player.maxHp - state.player.hp);
-    if(heal>0){ state.player.hp += heal; log(`You recover ${heal} HP.`); }
-    state.enemyChance = Math.min(95, state.enemyChance + 5);
-    updateHUD();
-    return;
-  }
-  if(type === "Empty Room"){
-    // 50% chance of variation
-    if(Math.random() < 0.5){
-      const opt = Math.random();
-      if(opt < 0.33){ // pond
-        log("You find a small pond, water faintly glowing.");
-        showPondOptions();
-        return;
-      } else if(opt < 0.66){ // dark
-        log("A dark chamber blocks the way; you can't see the path.");
-        showDarkOptions();
-        return;
-      } else { // shrine
-        log("A healing shrine stands here, warm to the touch.");
-        const heal = Math.min(15, state.player.maxHp - state.player.hp);
-        state.player.hp += heal;
-        log(`Shrine heals you for ${heal} HP.`);
-        state.enemyChance = Math.min(95, state.enemyChance + 5);
-        updateHUD();
-        return;
-      }
-    } else {
-      log("An empty, echoing room. Nothing happens.");
-      state.enemyChance = Math.min(95, state.enemyChance + 5);
-      updateHUD();
-      return;
-    }
-  }
-}
-
-/* Pond options */
-function showPondOptions(){
-  $('exploreDetails').innerHTML = `<div class="small">Pond — Use Shell to attract healing fish (+10 HP) or leave.</div>
-    <div style="margin-top:8px"><button id="pondUse">USE SHELL</button> <button id="pondLeave">LEAVE</button></div>`;
-  $('pondUse').addEventListener('click', ()=>{
-    if((state.items["Shell"]||0) > 0){
-      state.items["Shell"]--;
-      const heal = Math.min(10, state.player.maxHp - state.player.hp);
-      state.player.hp += heal;
-      log(`You use Shell in pond — fish heal you for ${heal} HP.`);
-      $('exploreDetails').innerHTML = "";
-      state.enemyChance = Math.min(95, state.enemyChance + 5);
-      updateHUD();
-    } else {
-      log("You have no Shell.");
-    }
-  }, { once:true });
-  $('pondLeave').addEventListener('click', ()=>{
-    $('exploreDetails').innerHTML = "";
-    state.enemyChance = Math.min(95, state.enemyChance + 5);
-    updateHUD();
-  }, { once:true });
-}
-
-/* Dark options */
-function showDarkOptions(){
-  $('exploreDetails').innerHTML = `<div class="small">Dark Room — Use Torch to light the way (Torch is reusable) or leave.</div>
-    <div style="margin-top:8px"><button id="useTorchBtn">USE TORCH</button> <button id="leaveDarkBtn">LEAVE</button></div>`;
-  $('useTorchBtn').addEventListener('click', ()=>{
-    if((state.items["Torch"]||0) > 0){
-      log("You light your Torch (reusable). The room reveals a passage.");
-      // small loot chance
-      if(Math.random() < 0.25){
-        const it = randomItem();
-        state.items[it] = (state.items[it]||0)+1;
-        log(`In the torchlight you find: ${it}`);
-      } else {
-        log("The torch reveals carved runes but nothing else.");
-      }
-      $('exploreDetails').innerHTML = "";
-      state.enemyChance = Math.min(95, state.enemyChance + 5);
-      updateHUD();
-    } else {
-      log("You have no Torch.");
-    }
-  }, { once:true });
-  $('leaveDarkBtn').addEventListener('click', ()=>{
-    $('exploreDetails').innerHTML = "";
-    state.enemyChance = Math.min(95, state.enemyChance + 5);
-    updateHUD();
-  }, { once:true });
-}
-
-/* ========== COMBAT ========== */
-
-/* start combat helper */
-function startCombat(){
-  state.inCombat = true;
-  $('combatArea').classList.remove('hidden');
-  $('enemyHPBox').classList.remove('hidden');
-  updateEnemyHP();
-  updateHUD();
-}
-
-/* spawn boss function (when selected) */
-function spawnBoss(){
-  if(state.bossIndex >= BOSSES.length) return;
-  const b = JSON.parse(JSON.stringify(BOSSES[state.bossIndex]));
-  b.origHp = b.hp;
-  b.boss = true;
-  state.enemy = b;
-  state.bossIndex++;
-  log(`BOSS: ${b.name} descends...`);
-  startCombat();
-}
-
-/* clone random enemy */
-function cloneRandomEnemy(){
-  const e = ENEMIES[Math.floor(Math.random()*ENEMIES.length)];
-  const c = JSON.parse(JSON.stringify(e));
-  c.origHp = c.hp;
-  return c;
-}
-
-/* random item helper */
-function randomItem(){ const list=["Meat","Lightning Bug","Sticky Note","Shell","Beer","Medical Pack"]; return list[Math.floor(Math.random()*list.length)]; }
-
-/* attack click minigame */
-$('attackBtn').addEventListener('click', ()=> {
-  if(!state.enemy){ log("No enemy to attack."); return; }
-  startAttack();
-});
-
-function startAttack(){
-  // clickTarget is player's primary damage plus any permanent increases on primaryDmg
-  state.clickTarget = Math.max(1, Math.floor(state.player.primaryDmg + (state.tempDamageBoost || 0)));
-  state.clicks = 0;
-  state.attackStartMs = 0;
-  $('attackText').innerText = `Click Attack ${state.clickTarget} Amount of times in 4 seconds.`;
-  $('clickCounter').innerText = '0';
-  $('attackBox').classList.remove('hidden');
-  $('clickBtn').disabled = false;
-  setTimeout(resolveAttack, 4000);
-}
-
-$('clickBtn').addEventListener('click', ()=>{
-  if(state.clicks === 0) state.attackStartMs = Date.now();
-  state.clicks++;
-  $('clickCounter').innerText = state.clicks;
-});
-
-/* resolve attack */
-function resolveAttack(){
-  $('attackBox').classList.add('hidden');
-  const clicks = state.clicks || 0;
-  const target = state.clickTarget || 1;
-  const damage = Math.min(clicks, target);
-  let finalDamage = damage;
-  // crit: if reached target within 2s, 40% chance to crit for extra 50% of target
-  if(clicks >= target && state.attackStartMs){
-    const ms = Date.now() - state.attackStartMs;
-    if(ms <= 2000 && Math.random() < 0.4){
-      const bonus = Math.ceil(target * 0.5);
-      finalDamage += bonus;
-      log(`Critical hit! +${bonus} damage.`);
-    }
-  }
-  // apply temp damage boost (from combos) that applies once
-  if(state.tempDamageBoost && state.tempDamageBoostTurns > 0){
-    finalDamage += state.tempDamageBoost;
-    state.tempDamageBoostTurns--;
-    if(state.tempDamageBoostTurns <= 0) state.tempDamageBoost = 0;
-  }
-  state.enemy.hp -= finalDamage;
-  log(`You deal ${finalDamage} damage.`);
-  updateEnemyHP();
-  if(state.enemy.hp <= 0) {
-    state.enemy.hp = 0;
-    handleEnemyDefeat();
-  } else {
-    setTimeout(enemyTurn, 500);
-  }
-}
-
-/* dodge */
-$('dodgeBtn').addEventListener('click', ()=> {
-  if(!state.enemy){ log("No incoming attack."); return; }
-  startDodgeUI();
-});
-
-let dodgeInterval = null;
-let dodgePos = 0;
-function startDodgeUI(){
-  $('dodgeBox').classList.remove('hidden');
-  // random target zone width and position for fairness/readability
-  const width = 10 + Math.floor(Math.random()*16); // 10-25%
-  const left = 30 + Math.floor(Math.random()*40); // 30-70%
-  $('dodgeTarget').style.width = width + '%';
-  $('dodgeTarget').style.left = left + '%';
-  dodgePos = 0;
-  const speed = 2 + Math.min(6, Math.floor(state.roomCount / 10)); // scale a bit
-  if(dodgeInterval) clearInterval(dodgeInterval);
-  dodgeInterval = setInterval(()=>{
-    dodgePos += speed;
-    if(dodgePos > 100) dodgePos = 0;
-    $('dodgeIndicator').style.left = dodgePos + '%';
-  }, 30);
-}
-
-/* resolve dodge */
-$('dodgeNowBtn').addEventListener('click', ()=>{
-  if(dodgeInterval) clearInterval(dodgeInterval);
-  $('dodgeBox').classList.add('hidden');
-  const left = parseFloat($('dodgeTarget').style.left);
-  const width = parseFloat($('dodgeTarget').style.width);
-  const right = left + width;
-  const marker = parseFloat($('dodgeIndicator').style.left);
-  if(marker >= left && marker <= right){
-    log("Perfect dodge! You avoid the attack.");
-    // success: enemy turn skipped (do nothing)
-  } else {
-    const dmg = (state.enemy.dmg || 10) * 2;
-    state.player.hp -= dmg;
-    log(`Failed dodge! You take ${dmg} damage.`);
-    updateHUD();
-    if(state.player.hp <= 0) playerDied();
-  }
-});
-
-/* enemy turn */
-function enemyTurn(){
-  if(!state.enemy) return;
-  // check skip flag
-  if(state.enemySkipNext){
-    log(`${state.enemy.name} is stunned and misses its turn.`);
-    state.enemySkipNext = false;
-    return;
-  }
-  // enemy heal chance
-  if(Math.random() < 0.30){
-    const heal = 1 + Math.floor(Math.random()*10); // 1-10
-    state.enemy.hp += heal;
-    log(`${state.enemy.name} heals ${heal} HP.`);
-    updateEnemyHP();
-    return;
-  }
-  // normal attack (respect any nextDamageReducer present)
-  let dmg = state.enemy.dmg || 10;
-  if(state.enemy.nextDamageReducer){
-    dmg = Math.max(0, dmg - state.enemy.nextDamageReducer);
-    delete state.enemy.nextDamageReducer;
-  }
-  state.player.hp -= dmg;
-  log(`${state.enemy.name} hits you for ${dmg} damage.`);
-  updateHUD();
-  if(state.player.hp <= 0) playerDied();
-}
-
-/* handle enemy defeat */
-function handleEnemyDefeat(){
-  // voice lines
-  const enemyType = state.enemy ? state.enemy.type : "normal";
-  const ch = state.player.name;
-  let voice = "";
-  if(ch === "Spirit"){
-    if(enemyType==="zombie"||enemyType==="ghost") voice = "Killing the Killed… how… oddly satisfying.";
-    else voice = "Too easy. Next time… try harder.";
-  } else if(ch === "Mantis"){
-    if(enemyType==="zombie"||enemyType==="ghost") voice = "The undead is re-dead… satisfying.";
-    else voice = "My skill is unmatched! Heh.";
-  } else if(ch === "Cacerv"){
-    if(enemyType==="zombie"||enemyType==="ghost") voice = "Just like in the horror films! Except I don’t die.";
-    else voice = "HAHA! Bye bye, Birdie.";
-  } else if(ch === "Enola"){
-    if(enemyType==="zombie"||enemyType==="ghost") voice = "Can’t cook you... awww.";
-    else voice = "I wonder how you would taste in a stew…";
-  }
-  // boss kill override lines
-  if(state.enemy && state.enemy.boss){
-    if(ch==="Spirit") voice = "You were defeated, by a mere mortal.";
-    if(ch==="Mantis") voice = "Nanana boo boo!";
-    if(ch==="Cacerv") voice = "слишком легко";
-    if(ch==="Enola") voice = "Hmmm… a Divine dish? Haha! What a wonderful idea!";
-  }
-  if(voice) log(voice);
-
-  // XP and drops
-  const xpGain = state.enemy && state.enemy.boss ? 300 : 60;
-  state.xp += xpGain;
-  log(`Gained ${xpGain} XP.`);
-  // 25% item drop
-  if(Math.random() < 0.25){
-    const it = randomItem();
-    state.items[it] = (state.items[it]||0)+1;
-    log(`Found item: ${it}.`);
-  }
-
-  // boss reward: unlock per-run spell or permanent final
-  if(state.enemy && state.enemy.boss){
-    const idx = state.bossIndex - 1;
-    const spell = BOSS_SPELLS[idx];
-    if(idx === BOSS_SPELLS.length - 1){
-      // final boss: permanent special spell
-      state.permSpell = spell.name;
-      try{ localStorage.setItem('freefall_perm_spell', spell.name); }catch(e){}
-      log(`You earned the permanent power: ${spell.name}. It will persist across runs.`);
-    } else {
-      state.spells.push(spell.name);
-      log(`Learned spell: ${spell.name}`);
-    }
-  }
-
-  // next enemy if in queue
-  if(state.enemyQueue && state.enemyQueue.length > 0){
-    state.enemy = state.enemyQueue.shift();
-    state.enemy.origHp = state.enemy.hp;
-    log(`Another foe approaches: ${state.enemy.name}`);
-    updateEnemyHP();
-    updateHUD();
-    return;
-  } else {
-    // end combat
-    state.enemy = null;
-    state.inCombat = false;
-    $('combatArea').classList.add('hidden');
-    $('enemyHPBox').classList.add('hidden');
-    // reset enemy chance to 15 after fight per rules
-    state.enemyChance = 15.0;
-    updateHUD();
-    // level up check
-    checkLevelUp();
-  }
-}
-
-/* level up */
-function checkLevelUp(){
-  if(state.xp >= state.xpToLevel){
-    state.level++;
-    state.xp -= state.xpToLevel;
-    state.xpToLevel = Math.floor(state.xpToLevel * 1.35);
-    state.player.hp = state.player.maxHp; // restore to full
-    log(`LEVEL UP! You are now level ${state.level}. HP restored.`);
-    $('levelPanel').classList.remove('hidden');
-  }
-}
-
-$('lvlHpBtn').addEventListener('click', ()=>{
-  state.player.maxHp += 10; state.player.hp = state.player.maxHp;
-  $('levelPanel').classList.add('hidden'); log("Max HP +10 (HP restored)."); updateHUD();
-});
-$('lvlDmgBtn').addEventListener('click', ()=>{
-  state.player.primaryDmg += 3; $('levelPanel').classList.add('hidden'); log("Primary damage +3."); updateHUD();
-});
-$('lvlTreasureBtn').addEventListener('click', ()=>{
-  const it = randomItem(); state.items[it] = (state.items[it]||0)+1; $('levelPanel').classList.add('hidden');
-  log("You received: " + it); updateHUD();
-});
-
-/* player died */
-function playerDied(){
-  log("You have died. Run over.");
-  // show menu to start new run; keep permanent spell
-  $('menu').classList.remove('hidden');
-  $('hud').classList.add('hidden');
-  state.player = null;
-}
-
-/* ========== ITEMS & INVENTORY ========== */
+/* ======= INVENTORY button ====== */
 $('inventoryBtn').addEventListener('click', openInventory);
 $('closeInvBtn').addEventListener('click', ()=>{$('inventoryPanel').classList.add('hidden');});
 
 function openInventory(){
-  const container = $('inventoryList'); container.innerHTML = "";
-  Object.keys(state.items).forEach(k=>{
-    const qty = state.items[k] || 0;
-    const row = document.createElement('div'); row.style.margin='6px';
-    const label = document.createElement('span'); label.className='small'; label.innerText = `${k} x${qty}`;
-    const useBtn = document.createElement('button'); useBtn.innerText = "USE";
-    // Torch is reusable: allow use if qty>0, but do not consume
-    useBtn.disabled = (qty <= 0 && k !== "Torch");
-    useBtn.addEventListener('click', ()=>{
-      useItem(k);
-      openInventory(); // refresh
-    });
-    row.appendChild(label); row.appendChild(useBtn);
-    container.appendChild(row);
-  });
-  // combo: Beer + Lightning Bug -> +10 damage next attack
-  const comboRow = document.createElement('div'); comboRow.style.margin='8px';
-  const comboBtn = document.createElement('button'); comboBtn.innerText = "COMBINE: Beer + Lightning Bug -> +10 (next attack)";
-  comboBtn.disabled = !((state.items["Beer"]||0)>0 && (state.items["Lightning Bug"]||0)>0);
-  comboBtn.addEventListener('click', ()=>{
-    state.items["Beer"]--; state.items["Lightning Bug"]--;
-    state.tempDamageBoost = 10; state.tempDamageBoostTurns = 1;
-    log("You combine Beer + Lightning Bug: +10 damage for next attack.");
-    openInventory();
-  });
-  container.appendChild(comboRow); comboRow.appendChild(comboBtn);
-
-  // show permanent saved spell status
-  const permRow = document.createElement('div'); permRow.style.marginTop='8px'; permRow.className='small';
-  permRow.innerText = `Permanent Spell: ${state.permSpell || "NONE (final boss rewards this)"}`;
-  container.appendChild(permRow);
-
-  $('inventoryPanel').classList.remove('hidden');
-  updateHUD();
+const container = $('inventoryList'); container.innerHTML = "";
+Object.keys(state.items).forEach(k=>{
+const qty = state.items[k]||0;
+const row = document.createElement('div'); row.style.margin='6px';
+const label = document.createElement('span'); label.className='small'; label.innerText = `${k} x${qty}`;
+const useBtn = document.createElement('button'); useBtn.innerText = "USE";
+useBtn.disabled = (qty<=0 && k!=="Torch");
+useBtn.addEventListener('click', ()=>{ useItem(k); openInventory(); });
+row.appendChild(label); row.appendChild(useBtn); container.appendChild(row);
+});
+// combo button
+const comboRow = document.createElement('div'); comboRow.style.margin='8px';
+const comboBtn = document.createElement('button'); comboBtn.innerText="COMBINE: Beer + Lightning Bug -> +10 (next attack)";
+comboBtn.disabled = !((state.items["Beer"]||0)>0&&(state.items["Lightning Bug"]||0)>0);
+comboBtn.addEventListener('click', ()=>{ state.items["Beer"]--; state.items["Lightning Bug"]--; state.tempDamageBoost=10; state.tempDamageBoostTurns=1; log("Combo! +10 damage next attack."); openInventory(); });
+comboRow.appendChild(comboBtn); container.appendChild(comboRow);
+$('inventoryPanel').classList.remove('hidden');
+updateHUD();
 }
 
-/* use item */
 function useItem(name){
-  // Torch reusable: just light something (context-specific handled during exploration)
-  if(name === "Torch"){
-    if((state.items["Torch"]||0) <= 0){ log("No Torch."); return; }
-    log("You lift your Torch. It burns bright (reusable).");
-    return;
-  }
-  if((state.items[name]||0) <= 0){ log("No " + name); return; }
-  const inCombat = !!state.enemy;
-  // MEAT: +10 HP +5 max
-  if(name === "Meat"){
-    state.items["Meat"]--;
-    state.player.maxHp += 5;
-    state.player.hp = Math.min(state.player.maxHp, state.player.hp + 10);
-    log("You eat Meat: +10 HP, +5 max HP.");
-    if(inCombat) setTimeout(enemyTurn, 300);
-    updateHUD(); return;
-  }
-  if(name === "Lightning Bug"){
-    state.items["Lightning Bug"]--;
-    state.player.primaryDmg += 1;
-    log("You release a Lightning Bug: primary damage +1 (permanent this run).");
-    if(inCombat) setTimeout(enemyTurn, 300);
-    updateHUD(); return;
-  }
-  if(name === "Sticky Note"){
-    state.items["Sticky Note"]--;
-    if(inCombat){
-      state.enemySkipNext = true;
-      log("You place a Sticky Note — enemy will skip its next turn.");
-      setTimeout(()=>{/* nothing; enemyTurn checks flag */}, 200);
-    } else {
-      log("You write a Sticky Note and place it; it hums faintly.");
-    }
-    updateHUD(); return;
-  }
-  if(name === "Shell"){
-    state.items["Shell"]--;
-    if(inCombat){
-      const dmg = 20;
-      state.enemy.hp -= dmg;
-      log(`You throw a Shell: ${dmg} damage.`);
-      updateEnemyHP();
-      if(state.enemy.hp <= 0) handleEnemyDefeat();
-      else setTimeout(enemyTurn, 300);
-    } else {
-      log("You hold the Shell. It might be used near a pond.");
-    }
-    updateHUD(); return;
-  }
-  if(name === "Beer"){
-    state.items["Beer"]--;
-    state.player.primaryDmg += 5;
-    log("You drink Beer: primary damage +5 permanently (this run).");
-    if(inCombat) setTimeout(enemyTurn, 300);
-    updateHUD(); return;
-  }
-  if(name === "Medical Pack"){
-    state.items["Medical Pack"]--;
-    const heal = Math.min(40, state.player.maxHp - state.player.hp);
-    state.player.hp += heal;
-    log(`You use Medical Pack: +${heal} HP.`);
-    if(inCombat) setTimeout(enemyTurn, 300);
-    updateHUD(); return;
-  }
-  log("Item had no effect.");
+if((state.items[name]||0)<=0 && name!=="Torch"){ log("No "+name); return; }
+if(name==="Torch"){ log("You light your Torch."); return; }
+if(name==="Meat"){ state.items[name]--; state.player.maxHp+=5; state.player.hp=Math.min(state.player.maxHp,state.player.hp+10); log("You eat Meat: +10 HP, +5 max HP."); updateHUD(); return; }
+if(name==="Lightning Bug"){ state.items[name]--; state.player.primaryDmg+=1; log("Lightning Bug: +1 primary damage this run."); updateHUD(); return; }
+if(name==="Sticky Note"){ state.items[name]--; state.enemySkipNext=true; log("Sticky Note: enemy skips next turn."); return; }
+if(name==="Shell"){ state.items[name]--; log("Shell used (effect depends on room)."); updateHUD(); return; }
+if(name==="Beer"){ state.items[name]--; state.player.primaryDmg+=5; log("Beer: +5 primary damage this run."); updateHUD(); return; }
 }
 
-/* ========== COMBOS (separate button) ========== */
-$('comboBtn').addEventListener('click', ()=>{
-  if((state.items["Beer"]||0) > 0 && (state.items["Lightning Bug"]||0) > 0){
-    state.items["Beer"]--; state.items["Lightning Bug"]--;
-    state.tempDamageBoost = 10; state.tempDamageBoostTurns = 1;
-    log("You combine Beer + Lightning Bug: +10 damage for next attack.");
-    // consuming a combo likely counts as a turn
-    if(state.enemy) setTimeout(enemyTurn, 300);
-    updateHUD();
-  } else log("You lack Beer and/or Lightning Bug.");
+/* ===== COMBAT ===== */
+$('attackBtn').addEventListener('click', ()=>{ if(state.enemy) startAttack(); else log("No enemy."); });
+
+function startAttack(){
+state.clickTarget=Math.max(1,state.player.primaryDmg+(state.tempDamageBoost||0));
+state.clicks=0; state.attackStartMs=0;
+$('attackText').innerText=`Click Attack ${state.clickTarget} Amount of times in 4 seconds.`;
+$('clickCounter').innerText='0'; $('attackBox').classList.remove('hidden'); $('clickBtn').disabled=false;
+setTimeout(resolveAttack,4000);
+}
+
+$('clickBtn').addEventListener('click', ()=>{
+if(state.clicks===0) state.attackStartMs=Date.now();
+state.clicks++; $('clickCounter').innerText=state.clicks;
 });
 
-/* ========== SPELLS UI ========== */
-$('spellsBtn').addEventListener('click', openSpells);
-$('closeSpellsBtn').addEventListener('click', ()=>{$('spellsPanel').classList.add('hidden');});
-
-function openSpells(){
-  const list = $('spellsList'); list.innerHTML = "";
-  const spells = state.spells.slice();
-  if(state.permSpell) spells.push(state.permSpell + " (PERMANENT)");
-  if(spells.length === 0) { list.innerText = "No spells unlocked."; }
-  else spells.forEach(s=>{
-    const row = document.createElement('div'); row.style.margin='6px';
-    const label = document.createElement('div'); label.className='small'; label.innerText = s;
-    const btn = document.createElement('button'); btn.innerText = "CAST";
-    btn.addEventListener('click', ()=>{ castSpell(s.replace(" (PERMANENT)","")); $('spellsPanel').classList.add('hidden'); });
-    row.appendChild(label); row.appendChild(btn);
-    list.appendChild(row);
-  });
-  $('spellsPanel').classList.remove('hidden');
-}
-
-/* cast spell logic */
-function castSpell(name){
-  if(!state.enemy){ log("No enemy here to cast on."); return; }
-  log(`You cast ${name}.`);
-  if(name === "Smite"){ state.enemy.hp -= 50; log("Smite deals 50 damage."); }
-  else if(name === "Rot Nova"){ state.enemy.hp -= 35; state.enemy.nextDamageReducer = (state.enemy.nextDamageReducer||0) + 10; log("Rot Nova deals 35 and weakens enemy next turn."); }
-  else if(name === "Hellbrand"){ state.enemy.hp -= 70; state.player.hp -= 10; log("Hellbrand deals 70, you take 10 recoil."); }
-  else if(name === "Fear Lock"){ state.enemySkipNext = true; log("Fear Lock: enemy will lose next turn."); }
-  else if(state.permSpell && name === state.permSpell){ // permanent special
-    // assume Divine Sever style big damage
-    const dmg = 200;
-    state.enemy.hp -= dmg;
-    log(`${name} deals ${dmg} damage!`);
-  } else {
-    log("Spell effect unclear.");
-  }
-  updateEnemyHP();
-  // spells consume turn -> enemy acts if alive
-  setTimeout(()=>{ if(state.enemy && state.enemy.hp > 0) enemyTurn(); }, 300);
-}
-
-/* ========== BOSS SPAWN HELPER ========== */
-/* spawnBoss is used in exploration when conditions met, implemented earlier */
-
-/* ========== ENEMY HP UPDATE ========== */
-function updateEnemyHP(){
-  updateHUD();
-  if(state.inCombat && state.enemy){
-    $('enemyHPBox').classList.remove('hidden');
-    $('enemyText').innerText = `${state.enemy.name} — HP ${Math.max(0,Math.floor(state.enemy.hp))}`;
-    const orig = state.enemy.origHp || state.enemy.hp || 1;
-    const pct = clamp((state.enemy.hp / orig) * 100, 0, 100);
-    $('enemyFill').style.width = pct + '%';
-  } else $('enemyHPBox').classList.add('hidden');
-}
-
-/* ========== SPAWN HELPERS ========== */
-function cloneRandomEnemy(){ const e = ENEMIES[Math.floor(Math.random()*ENEMIES.length)]; const c = JSON.parse(JSON.stringify(e)); c.origHp = c.hp; return c; }
-
-/* ========== PLAYER DIED ========== */
-function playerDied(){ log("You died. Run over."); $('menu').classList.remove('hidden'); $('hud').classList.add('hidden'); state.player = null; }
-
-/* ========== UTILITY ========== */
-function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
-
-/* ========== INIT UI STATE ========== */
-$('hud').classList.add('hidden');
-$('inventoryPanel').classList.add('hidden');
-$('spellsPanel').classList.add('hidden');
-$('levelPanel').classList.add('hidden');
-$('combatArea').classList.add('hidden');
+function resolveAttack(){
 $('attackBox').classList.add('hidden');
-$('dodgeBox').classList.add('hidden');
-$('enemyHPBox').classList.add('hidden');
+const clicks=state.clicks||0; const target=state.clickTarget||1;
+let damage=Math.min(clicks,target);
+if(clicks>=target && state.attackStartMs && (Date.now()-state.attackStartMs)<=2000 && Math.random()<0.4){
+damage+=Math.ceil(target*0.5); log("Critical hit!"); }
+if(state.tempDamageBoost && state.tempDamageBoostTurns>0){ damage+=state.tempDamageBoost; state.tempDamageBoostTurns--; if(state.tempDamageBoostTurns<=0) state.tempDamageBoost=0; }
+state.enemy.hp-=damage; log(`You deal ${damage} damage to ${state.enemy.name}.`);
+updateEnemyHP();
+if(state.enemy.hp<=0) { state.enemy.hp=0; enemyDefeated(); } else setTimeout(enemyTurn,500);
+}
 
-}); // DOMContentLoaded
+function enemyDefeated(){
+log(`You defeated ${state.enemy.name}!`);
+if(state.enemy.dmg) log(`XP gained: 50`); else log(`Boss defeated! Massive XP!`);
+state.inCombat=false; state.enemy=null;
+updateHUD();
+$('combatArea').classList.add('hidden'); $('attackBox').classList.add('hidden'); $('dodgeBox').classList.add('hidden');
+}
+
+/* ===== DODGE ===== */
+$('dodgeBtn').addEventListener('click', ()=>{$('dodgeBox').classList.remove('hidden');});
+$('dodgeNowBtn').addEventListener('click', ()=>{ log("You attempt a dodge."); $('dodgeBox').classList.add('hidden'); });
+
+/* ===== SEARCH/MOVE ===== */
+$('exploreBtn').addEventListener('click', exploreRoom);
+
+function exploreRoom(){
+state.roomCount++;
+$('exploreDetails').innerText = "You explore the room…";
+updateHUD();
+const chance=Math.random()*100;
+if(chance<state.enemyChance){ spawnEnemy(); }
+}
+
+function spawnEnemy(){
+state.inCombat=true;
+const e=JSON.parse(JSON.stringify(ENEMIES[Math.floor(Math.random()*ENEMIES.length)]));
+e.origHp=e.hp;
+state.enemy=e;
+log(`A wild ${e.name} appears!`);
+$('combatArea').classList.remove('hidden');
+updateHUD();
+}
+});
 </script>
+</div>
 </body>
 </html>
